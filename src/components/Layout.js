@@ -9,9 +9,10 @@ import NavBar from "./NavBar";
 import Sidebar from "./Sidebar";
 import CheckRoutes from "./CheckRoutes";
 
-const Layout = ({ children }) => {
+const Layout = () => {
   const [coordinates, set_coordinates] = React.useState([]);
   const [mode, set_mode] = React.useState("driving");
+  const [type, set_type] = React.useState("directions/v5");
   const [routes, set_routes] = React.useState([]);
   React.useEffect(() => {
     if (coordinates.length > 1) {
@@ -23,10 +24,9 @@ const Layout = ({ children }) => {
           }`)
       );
 
-      get_direction(COR, mode).then((res) => {
+      get_direction(type, COR, mode).then((res) => {
         if (res) {
           set_routes(res);
-          // localStorage.routes = JSON.stringify(res);
         }
       });
     }
@@ -37,7 +37,13 @@ const Layout = ({ children }) => {
     <>
       <CssBaseline />
       <div style={{ minHeight: "100vh", width: "100%", display: "flex" }}>
-        <Sidebar mode={mode} onchange={set_mode} />
+        <Sidebar
+          mode={mode}
+          onchange={set_mode}
+          type={type}
+          set_routes={set_routes}
+          onTypeChange={set_type}
+        />
 
         <NavBar />
         <Grid
@@ -48,8 +54,12 @@ const Layout = ({ children }) => {
           }}
         >
           <Toolbar />
-          <CheckRoutes routes={routes} />
-          <Map coordinates={coordinates} set_coordinates={set_coordinates} />
+          <CheckRoutes routes={routes} type={type} />
+          <Map
+            coordinates={coordinates}
+            set_coordinates={set_coordinates}
+            routes={routes}
+          />
         </Grid>
       </div>
     </>

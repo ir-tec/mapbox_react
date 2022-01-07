@@ -11,7 +11,7 @@ import {
 import { styles } from "../styles/style";
 import React from "react";
 
-const Sidebar = ({ mode, onchange }) => {
+const Sidebar = ({ mode, onchange, onTypeChange, type, set_routes }) => {
   const style = styles();
 
   return (
@@ -63,6 +63,7 @@ const Sidebar = ({ mode, onchange }) => {
             </FormGroup>
           </FormControl>
         </Grid>
+        {/* ---------------------------------------------------------------------------- cycles */}
         <Grid
           item
           xs={12}
@@ -84,6 +85,38 @@ const Sidebar = ({ mode, onchange }) => {
                         checked={mode === item.value}
                         onChange={() => {
                           onchange(item.value);
+                        }}
+                      />
+                    }
+                    label={item.title}
+                  />
+                );
+              })}
+            </FormGroup>
+          </FormControl>
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          style={{
+            boxShadow: "0 0 5px rgba(0,0,0,0.2)",
+            padding: 16,
+            height: 200,
+          }}
+        >
+          <FormControl component="fieldset">
+            <FormLabel component="legend">Type</FormLabel>
+            <FormGroup>
+              {types.map((item, i) => {
+                return (
+                  <FormControlLabel
+                    key={i}
+                    control={
+                      <Checkbox
+                        checked={type === item.value}
+                        onChange={() => {
+                          set_routes([]);
+                          onTypeChange(item.value);
                         }}
                       />
                     }
@@ -175,4 +208,9 @@ const modes = [
   { title: "bicycle", value: "cycling" },
   { title: "Drive", value: "driving" },
   { title: "driving-traffic", value: "driving-traffic" },
+];
+
+const types = [
+  { title: "Directions", value: "directions/v5" },
+  { title: "Optimized", value: "optimized-trips/v1" },
 ];
