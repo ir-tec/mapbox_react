@@ -1,33 +1,33 @@
-import { Grid, Toolbar } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import React from "react";
 import Draggable from "react-draggable";
-import mapboxgl from 'mapbox-gl';
+// import mapboxgl from "mapbox-gl";
 
-mapboxgl.accessToken =process.env.REACT_APP_MAPBOX_KEY;
-const Content = ({ state }) => {
-  return (
-    <Grid
-      container
-      direction="column"
-      alignItems={"flex-start"}
-      justifyContent="flex-start"
-      item
-      xs={12}
-      style={{
-        backgroundColor: "blanchedalmond",
-        padding: 24,
+// mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_KEY;
+// const Content = ({ state }) => {
+//   return (
+//     <div
+//       ref={(el) => (this.mapWrapper = el)}
+//       className="mapWrapper"
+//       container
+//       direction="column"
+//       alignItems={"flex-start"}
+//       justifyContent="flex-start"
+//       item
+//       xs={12}
+//       style={{
+//         backgroundColor: "blanchedalmond",
+//         padding: 24,
 
-        height: "100vh",
-      }}
-    >
-      <Toolbar />
-      <Row state={state.map} />
-      <Row state={state.access} />
-    </Grid>
-  );
-};
-
-export default Content;
+//         height: "100vh",
+//       }}
+//     >
+//       <Toolbar />
+//       <Row state={state.map} />
+//       <Row state={state.access} />
+//     </div>
+//   );
+// };
 
 const Row = ({ state }) => {
   const [start, set_start] = React.useState(false);
@@ -61,9 +61,10 @@ const Row = ({ state }) => {
           width: "50%",
           height: 50,
           opacity: !state ? 0 : 1,
-
           margin: 8,
           transition: !start ? "0.2s" : "0s",
+          position: "absolute",
+          zIndex: 2,
         }}
       >
         asdasd
@@ -71,3 +72,5 @@ const Row = ({ state }) => {
     </Draggable>
   );
 };
+
+export default Row;
