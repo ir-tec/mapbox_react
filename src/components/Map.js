@@ -6,7 +6,7 @@ import mapboxGl, { Marker } from "mapbox-gl";
 
 mapboxGl.accessToken = process.env.REACT_APP_MY_TOKEN;
 
-const Map = ({ set_coordinates, coordinates, routes }) => {
+const Map = ({ set_coordinates, coordinates, routes, draw }) => {
   const map = useRef();
   const mapContainer = useRef();
   // const mapDirection = useRef();
@@ -24,8 +24,10 @@ const Map = ({ set_coordinates, coordinates, routes }) => {
 
   React.useEffect(() => {
     coordinates.map((item, i) => {
+      console.log(item);
       const el = document.createElement("div");
       el.className = "marker";
+      let marker = new Marker(el);
       el.innerHTML = String.fromCharCode(i + 65);
       const popup = new mapboxGl.Popup({
         offset: 10,
@@ -36,12 +38,45 @@ const Map = ({ set_coordinates, coordinates, routes }) => {
       el.addEventListener("mouseleave", (ev) => {
         popup.remove();
       });
-      return new Marker(el)
+
+      return marker
         .setLngLat([item.lng, item.lat])
         .setPopup(popup)
         .addTo(map.current);
     });
   }, [coordinates]);
+
+  // ------------------------------------------------------------------------------------- drawing line string
+  React.useEffect(() => {
+    if (routes.length !== 0 && draw) {
+      const router = new Date().getTime().toString();
+      map.current.addSource(router, {
+        type: "geojson",
+        data: {
+          type: "Feature",
+          properties: {},
+          geometry: {
+            type: "LineString",
+            coordinates: routes.routes[0].geometry.coordinates,
+          },
+        },
+      });
+      map.current.addLayer({
+        id: router,
+        type: "line",
+        source: router,
+        layout: {
+          "line-join": "round",
+          "line-cap": "round",
+        },
+        paint: {
+          "line-color": "#4FC3F7",
+          "line-width": 3,
+        },
+      });
+    }
+  }, [routes, draw]);
+
   // ------------------------------------------------------------------------------------- way points markers
   // React.useEffect(() => {
   //   if (Object.keys(routes).length > 0) {

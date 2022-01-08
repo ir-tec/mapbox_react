@@ -35,7 +35,7 @@ const CheckRoutes = ({ routes, type }) => {
           style={{
             position: "absolute",
             right: 4,
-            top: 70,
+            top: 125,
             zIndex: 10,
             fontWeight: "bold",
             textTransform: "capitalize",

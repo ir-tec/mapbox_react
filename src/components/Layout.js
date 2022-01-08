@@ -1,19 +1,23 @@
 import { CssBaseline, Grid, Toolbar } from "@material-ui/core";
 import React from "react";
 import Map from "./Map";
-// eslint-disable-next-line
-import MapComponent from "./MapComponent";
+
 import { get_direction } from "../api/map_api";
 
 import NavBar from "./NavBar";
 import Sidebar from "./Sidebar";
 import CheckRoutes from "./CheckRoutes";
+import Drawer from "./Drawer";
+import ShowPoints from "./ShowPoints";
+// import ClearPoints from "./ClearPoints";
 
 const Layout = () => {
   const [coordinates, set_coordinates] = React.useState([]);
   const [mode, set_mode] = React.useState("driving");
   const [type, set_type] = React.useState("directions/v5");
   const [routes, set_routes] = React.useState([]);
+  const [draw, set_draw] = React.useState(false);
+
   React.useEffect(() => {
     if (coordinates.length > 1) {
       let COR = "";
@@ -55,7 +59,16 @@ const Layout = () => {
         >
           <Toolbar />
           <CheckRoutes routes={routes} type={type} />
+          <Drawer set_draw={set_draw} routes={routes} />
+          <ShowPoints routes={routes} type={type} />
+          {/* <ClearPoints
+            routes={routes}
+            set_routes={set_routes}
+            set_coordinates={set_coordinates}
+          /> */}
           <Map
+            set_draw={set_draw}
+            draw={draw}
             coordinates={coordinates}
             set_coordinates={set_coordinates}
             routes={routes}

@@ -7,6 +7,7 @@ export const get_direction = async (type, coordinates, mode) => {
       {
         params: {
           access_token: process.env.REACT_APP_MAPBOX_KEY,
+          geometries: "geojson",
         },
       }
     );
