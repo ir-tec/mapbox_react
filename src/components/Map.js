@@ -6,10 +6,9 @@ import mapboxGl, { Marker } from "mapbox-gl";
 
 mapboxGl.accessToken = process.env.REACT_APP_MY_TOKEN;
 
-const Map = ({ set_coordinates, coordinates, routes, draw, type }) => {
+const Map = ({ set_coordinates, coordinates, routes, draw, type, erase }) => {
   const map = useRef();
   const mapContainer = useRef();
-  // const mapDirection = useRef();
 
   // ------------------------------------------------------------------------------------------ map initiated
   React.useEffect(() => {
@@ -21,12 +20,12 @@ const Map = ({ set_coordinates, coordinates, routes, draw, type }) => {
       center: [-79, 40],
     });
   }, []);
-
+  // ------------------------------------------------------------------------------------------ markers mount
   React.useEffect(() => {
     coordinates.map((item, i) => {
-      console.log(item);
       const el = document.createElement("div");
       el.className = "marker";
+
       let marker = new Marker(el);
       el.innerHTML = String.fromCharCode(i + 65);
       const popup = new mapboxGl.Popup({
@@ -44,12 +43,13 @@ const Map = ({ set_coordinates, coordinates, routes, draw, type }) => {
         .setPopup(popup)
         .addTo(map.current);
     });
-  }, [coordinates]);
+    return () => {};
+  }, [coordinates, erase]);
 
-  // ------------------------------------------------------------------------------------- drawing line string
+  // ------------------------------------------------------------------------------------------ drawing line string
   React.useEffect(() => {
+    const router = new Date().getTime().toString();
     if (routes.length !== 0 && draw) {
-      const router = new Date().getTime().toString();
       map.current.addSource(router, {
         type: "geojson",
         data: {
@@ -77,20 +77,13 @@ const Map = ({ set_coordinates, coordinates, routes, draw, type }) => {
         },
       });
     }
-  }, [routes, draw, type]);
-
-  // ------------------------------------------------------------------------------------- way points markers
-  // React.useEffect(() => {
-  //   if (Object.keys(routes).length > 0) {
-  //     const el2 = document.createElement("div");
-  //     el2.className = "wayPointMarker";
-  //     routes.waypoints.forEach((item, i) => {
-  //       new mapboxGl.Marker(el2)
-  //         .setLngLat([item.location[0], item.location[1]])
-  //         .addTo(map.current);
-  //     });
-  //   }
-  // }, [routes]);
+    return () => {
+      if (erase) {
+        console.log("asdwas");
+        map.current.removeLayer(router);
+      }
+    };
+  }, [routes, draw, type, erase]);
 
   // ------------------------------------------------------------------------------------------ Click Event add Coordinate
   React.useEffect(() => {

@@ -2,13 +2,12 @@ import { Fab, Zoom } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
 import React from "react";
 
-const ClearPoints = ({ routes, set_routes, set_coordinates }) => {
+const ClearPoints = ({ set_erase, routes }) => {
   return (
     <Zoom in={routes.length !== 0}>
       <Fab
         onClick={() => {
-          set_routes([]);
-          set_coordinates([]);
+          set_erase(true);
         }}
         style={{
           position: "absolute",

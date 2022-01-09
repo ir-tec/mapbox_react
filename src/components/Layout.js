@@ -9,6 +9,7 @@ import Sidebar from "./Sidebar";
 import CheckRoutes from "./CheckRoutes";
 import Drawer from "./Drawer";
 import ShowPoints from "./ShowPoints";
+import ClearPoints from "./ClearPoints";
 // import ClearPoints from "./ClearPoints";
 
 const Layout = () => {
@@ -17,6 +18,7 @@ const Layout = () => {
   const [type, set_type] = React.useState("directions/v5");
   const [routes, set_routes] = React.useState([]);
   const [draw, set_draw] = React.useState(false);
+  const [erase, set_erase] = React.useState(false);
 
   React.useEffect(() => {
     if (coordinates.length > 1) {
@@ -61,12 +63,14 @@ const Layout = () => {
           <CheckRoutes routes={routes} type={type} />
           <Drawer set_draw={set_draw} routes={routes} />
           <ShowPoints routes={routes} type={type} />
-          {/* <ClearPoints
+          <ClearPoints
             routes={routes}
             set_routes={set_routes}
             set_coordinates={set_coordinates}
-          /> */}
+            set_erase={set_erase}
+          />
           <Map
+            erase={erase}
             set_draw={set_draw}
             draw={draw}
             coordinates={coordinates}
