@@ -70,6 +70,7 @@ const Layout = () => {
             set_draw={set_draw}
             draw={draw}
             coordinates={coordinates}
+            type={type}
             set_coordinates={set_coordinates}
             routes={routes}
           />

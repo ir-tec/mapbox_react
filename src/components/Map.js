@@ -6,7 +6,7 @@ import mapboxGl, { Marker } from "mapbox-gl";
 
 mapboxGl.accessToken = process.env.REACT_APP_MY_TOKEN;
 
-const Map = ({ set_coordinates, coordinates, routes, draw }) => {
+const Map = ({ set_coordinates, coordinates, routes, draw, type }) => {
   const map = useRef();
   const mapContainer = useRef();
   // const mapDirection = useRef();
@@ -57,7 +57,9 @@ const Map = ({ set_coordinates, coordinates, routes, draw }) => {
           properties: {},
           geometry: {
             type: "LineString",
-            coordinates: routes.routes[0].geometry.coordinates,
+            coordinates:
+              routes[type === "directions/v5" ? "routes" : "trips"][0].geometry
+                .coordinates,
           },
         },
       });
@@ -75,7 +77,7 @@ const Map = ({ set_coordinates, coordinates, routes, draw }) => {
         },
       });
     }
-  }, [routes, draw]);
+  }, [routes, draw, type]);
 
   // ------------------------------------------------------------------------------------- way points markers
   // React.useEffect(() => {
