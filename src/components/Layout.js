@@ -1,6 +1,6 @@
 import { CssBaseline, Grid, Toolbar } from "@material-ui/core";
 import React from "react";
-import Map from "./Map";
+import Map from "./ReactMap";
 
 import { get_direction } from "../api/map_api";
 
@@ -37,7 +37,7 @@ const Layout = () => {
       });
     }
     // eslint-disable-next-line
-  }, [coordinates]);
+  }, [coordinates, type]);
 
   return (
     <>
@@ -64,11 +64,11 @@ const Layout = () => {
           <Drawer set_draw={set_draw} routes={routes} />
           <ShowPoints routes={routes} type={type} />
           <ClearPoints
+            set_coordinates={set_coordinates}
             routes={routes}
             set_routes={set_routes}
-            set_coordinates={set_coordinates}
-            set_erase={set_erase}
           />
+
           <Map
             erase={erase}
             set_draw={set_draw}

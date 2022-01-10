@@ -89,6 +89,7 @@ const Map = ({ set_coordinates, coordinates, routes, draw, type, erase }) => {
   React.useEffect(() => {
     if (!map.current) return;
     map.current.on("click", (ev) => {
+      console.log(ev.lngLat);
       set_coordinates((pre) => [...pre, ev.lngLat]);
     });
   }, [set_coordinates]);
