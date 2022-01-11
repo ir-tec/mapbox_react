@@ -32,6 +32,7 @@ const ShowPoints = ({ routes, type }) => {
             top: 180,
             zIndex: 10,
             fontWeight: "bold",
+            width: 160,
             textTransform: "capitalize",
             backgroundColor: "white",
           }}

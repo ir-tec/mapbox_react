@@ -26,3 +26,7 @@
   border-radius: 5px;
   background-color: black;
 }
+.map {
+  height: calc(100vh - 64px);
+  width: 100%;
+}

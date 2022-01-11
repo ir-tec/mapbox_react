@@ -60,14 +60,6 @@ const ReactMap = ({ set_coordinates, coordinates, routes, draw }) => {
           </React.Fragment>
         );
       })}
-      {/* {draw &&
-        routes.routes[0].geometry.coordinates.map((item, i) => {
-          return (
-            <Marker key={i} latitude={item[1]} longitude={item[0]}>
-              <div className="liner"></div>;
-            </Marker>
-          );
-        })} */}
     </ReactMapGL>
   );
 };

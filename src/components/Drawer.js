@@ -16,6 +16,7 @@ const Drawer = ({ set_draw, routes }) => {
           zIndex: 10,
           fontWeight: "bold",
           textTransform: "capitalize",
+          width: 160,
         }}
       >
         <Gesture style={{ marginRight: 16 }} /> String Line

@@ -37,6 +37,7 @@ const CheckRoutes = ({ routes, type }) => {
             right: 4,
             top: 125,
             zIndex: 10,
+            width: 160,
             fontWeight: "bold",
             textTransform: "capitalize",
           }}

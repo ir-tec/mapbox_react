@@ -1,6 +1,6 @@
 import { CssBaseline, Grid, Toolbar } from "@material-ui/core";
 import React from "react";
-import Map from "./ReactMap";
+import Map from "./MapboxGl";
 
 import { get_direction } from "../api/map_api";
 
@@ -18,7 +18,6 @@ const Layout = () => {
   const [type, set_type] = React.useState("directions/v5");
   const [routes, set_routes] = React.useState([]);
   const [draw, set_draw] = React.useState(false);
-  const [erase, set_erase] = React.useState(false);
 
   React.useEffect(() => {
     if (coordinates.length > 1) {
@@ -37,7 +36,7 @@ const Layout = () => {
       });
     }
     // eslint-disable-next-line
-  }, [coordinates, type]);
+  }, [coordinates, type, mode]);
 
   return (
     <>
@@ -70,7 +69,6 @@ const Layout = () => {
           />
 
           <Map
-            erase={erase}
             set_draw={set_draw}
             draw={draw}
             coordinates={coordinates}
