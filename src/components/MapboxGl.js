@@ -7,11 +7,29 @@ const Map = ReactMapboxGl({
 
 const MapboxGl = ({ coordinates, set_coordinates, routes, draw, type }) => {
   const [popup, set_popup] = React.useState({});
+  const ref = React.useRef(null);
 
   return (
     <Map
+      ref={ref}
       // eslint-disable-next-line
       style={"mapbox://styles/mapbox/streets-v9"}
+      onStyleLoad={() => {
+        set_coordinates([
+          {
+            lng: -0.19378797582953666,
+            lat: 51.539129652183874,
+          },
+          {
+            lng: -0.2394499020995795,
+            lat: 51.55087283086729,
+          },
+          {
+            lng: -0.3098310666502755,
+            lat: 51.5401973391198,
+          },
+        ]);
+      }}
       onClick={(map, e) => {
         set_coordinates((pre) => [...pre, e.lngLat]);
       }}
@@ -28,7 +46,12 @@ const MapboxGl = ({ coordinates, set_coordinates, routes, draw, type }) => {
         />
       </Layer>
 
-      <Layer type="circle" id="position-marker" paint={POSITION_CIRCLE_PAINT}>
+      <Layer
+        type="circle"
+        id="marker"
+        layout={{}}
+        paint={POSITION_CIRCLE_PAINT}
+      >
         {coordinates.map((item, i) => {
           return (
             <Feature
