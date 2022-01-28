@@ -1,10 +1,27 @@
-import { AppBar, Toolbar } from "@material-ui/core";
+import { AppBar, Grid, Toolbar, Typography, useTheme } from "@material-ui/core";
 import React from "react";
 
-const NavBar = () => {
+import ProfileDropdown from "./ProfileDropdown";
+
+const NavBar = ({ set_coordinates, set_routes, set_add_project }) => {
+  const theme = useTheme();
   return (
-    <AppBar>
-      <Toolbar></Toolbar>
+    <AppBar style={{ zIndex: theme.zIndex.drawer + 1 }}>
+      <Toolbar>
+        <Grid container alignItems="center">
+          <Grid item></Grid>
+          <Grid item>
+            <Typography variant="body1">userName</Typography>
+          </Grid>
+          <Grid item>
+            <ProfileDropdown
+              set_add_project={set_add_project}
+              set_coordinates={set_coordinates}
+              set_routes={set_routes}
+            />
+          </Grid>
+        </Grid>
+      </Toolbar>
     </AppBar>
   );
 };

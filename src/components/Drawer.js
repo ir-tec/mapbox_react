@@ -4,7 +4,7 @@ import React from "react";
 
 const Drawer = ({ set_draw, routes }) => {
   return (
-    <Zoom in={routes.length !== 0}>
+    <Zoom in={routes[0].length !== 0}>
       <Fab
         variant="extended"
         color="primary"

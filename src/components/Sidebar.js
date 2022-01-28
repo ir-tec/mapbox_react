@@ -1,12 +1,13 @@
 import {
   Checkbox,
+  Divider,
   Drawer,
   FormControl,
   FormControlLabel,
   FormGroup,
   FormLabel,
   Grid,
-  Typography,
+  Toolbar,
 } from "@material-ui/core";
 import { styles } from "../styles/style";
 import React from "react";
@@ -17,7 +18,6 @@ const Sidebar = ({ mode, onchange, onTypeChange, type, set_routes }) => {
   return (
     <Drawer
       variant="permanent"
-      open={true}
       style={{ width: 200 }}
       classes={{
         paper: style.sidebar,
@@ -29,14 +29,11 @@ const Sidebar = ({ mode, onchange, onTypeChange, type, set_routes }) => {
         justifyContent="center"
         style={{}}
       >
-        <Grid item style={{ height: 65 }}>
-          <Typography variant="h5">LOGO</Typography>
-        </Grid>
+        <Toolbar />
         <Grid
           item
           xs={12}
           style={{
-            boxShadow: "0 0 5px rgba(0,0,0,0.2)",
             padding: 16,
             height: 200,
           }}
@@ -63,12 +60,14 @@ const Sidebar = ({ mode, onchange, onTypeChange, type, set_routes }) => {
             </FormGroup>
           </FormControl>
         </Grid>
+        <Grid item xs={12}>
+          <Divider />
+        </Grid>
         {/* ---------------------------------------------------------------------------- cycles */}
         <Grid
           item
           xs={12}
           style={{
-            boxShadow: "0 0 5px rgba(0,0,0,0.2)",
             padding: 16,
             height: 200,
           }}
@@ -95,11 +94,14 @@ const Sidebar = ({ mode, onchange, onTypeChange, type, set_routes }) => {
             </FormGroup>
           </FormControl>
         </Grid>
+        <Grid item xs={12}>
+          <Divider />
+        </Grid>
+
         <Grid
           item
           xs={12}
           style={{
-            boxShadow: "0 0 5px rgba(0,0,0,0.2)",
             padding: 16,
             height: 200,
           }}
@@ -127,76 +129,6 @@ const Sidebar = ({ mode, onchange, onTypeChange, type, set_routes }) => {
             </FormGroup>
           </FormControl>
         </Grid>
-        {/* <Grid
-          item
-          xs={12}
-          style={{
-            boxShadow: "0 0 5px rgba(0,0,0,0.2)",
-            padding: 16,
-            height: 120,
-          }}
-        >
-          <FormControl component="fieldset">
-            <FormLabel component="legend">Oprations</FormLabel>
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={state.map}
-                    onChange={onchange}
-                    name="Optimization"
-                  />
-                }
-                label="Optimization"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={state.access}
-                    onChange={onchange}
-                    name="Direction"
-                  />
-                }
-                label="Direction"
-              />
-            </FormGroup>
-          </FormControl>
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          style={{
-            boxShadow: "0 0 5px rgba(0,0,0,0.2)",
-            padding: 16,
-            height: 120,
-          }}
-        >
-          <FormControl component="fieldset">
-            <FormLabel component="legend">Projects</FormLabel>
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={state.map}
-                    onChange={onchange}
-                    name="Optimization"
-                  />
-                }
-                label="Optimization"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={state.access}
-                    onChange={onchange}
-                    name="Direction"
-                  />
-                }
-                label="Direction"
-              />
-            </FormGroup>
-          </FormControl>
-        </Grid> */}
       </Grid>
     </Drawer>
   );

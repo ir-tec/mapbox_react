@@ -30,3 +30,8 @@
   height: calc(100vh - 64px);
   width: 100%;
 }
+
+@font-face {
+  font-family: inter;
+  src: url("./asset/fonts/Inter-Regular.ttf");
+}
