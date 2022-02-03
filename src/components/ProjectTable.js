@@ -1,14 +1,19 @@
 import React from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { get_projects } from "../api/map_api";
+import { delete_project, get_projects } from "../api/map_api";
 import { IconButton } from "@material-ui/core";
-import { VisibilityRounded } from "@material-ui/icons";
+import { Delete, VisibilityRounded } from "@material-ui/icons";
 import moment from "moment";
+import Store from "../redux/Store";
+import { set_route_to_edit } from "../redux/actions";
+import { connect } from "react-redux";
 const ProjectTable = ({
   set_open,
   set_routes,
   set_coordinates,
   set_add_project,
+  editRoute,
+  set_edit_open,
 }) => {
   const [data, set_data] = React.useState([]);
 
@@ -59,18 +64,47 @@ const ProjectTable = ({
       width: 200,
       renderCell: (props) => {
         return (
-          <IconButton
-            onClick={() => {
-              set_routes(props.row.routes[0].points);
-              set_coordinates(props.row.routes[0].coordinates);
-              set_open(false);
-              set_add_project((pre) => {
-                return { ...pre, project_type: props.row.routes[0].type };
-              });
-            }}
-          >
-            <VisibilityRounded />
-          </IconButton>
+          <>
+            <IconButton
+              onClick={() => {
+                set_edit_open(false);
+                new Promise((res, rej) => {
+                  set_coordinates([[]]);
+                  res();
+                  set_routes(props.row.routes[0].points);
+                  Store.dispatch(set_route_to_edit(props.row._id));
+                }).then(() => {
+                  set_coordinates(props.row.routes[0].coordinates);
+                  set_add_project((pre) => {
+                    return {
+                      ...pre,
+                      project_type: props.row.routes[0].type,
+                    };
+                  });
+                  set_open(false);
+                });
+              }}
+            >
+              <VisibilityRounded />
+            </IconButton>
+            <IconButton
+              onClick={() => {
+                delete_project(props.row._id).then((res) => {
+                  if (!res) return;
+                  set_data((pre) =>
+                    pre.filter((item) => item._id !== props.row._id)
+                  );
+                  set_coordinates([[]]);
+                  if (editRoute === props.row._id) {
+                    Store.dispatch(set_route_to_edit(""));
+                  }
+                  set_routes([[]]);
+                });
+              }}
+            >
+              <Delete />
+            </IconButton>
+          </>
         );
       },
       sortable: false,
@@ -89,5 +123,7 @@ const ProjectTable = ({
     />
   );
 };
-
-export default ProjectTable;
+const mapStateToProps = ({ editRoute }) => {
+  return { editRoute };
+};
+export default connect(mapStateToProps)(ProjectTable);

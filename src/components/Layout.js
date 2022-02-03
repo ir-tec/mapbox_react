@@ -9,10 +9,14 @@ import Drawer from "./Drawer";
 import ClearPoints from "./ClearPoints";
 import AddProject from "./AddProject";
 import SaveButton from "./SaveButton";
+import EditRoute from "./EditRoute";
+import PutProject from "./PutProject";
 
 const Layout = () => {
   const [coordinates, set_coordinates] = React.useState([[]]);
   const [routeCounter, set_routeCounter] = React.useState(0);
+  const [editing, set_editing] = React.useState(false);
+  const [edit_open, set_edit_open] = React.useState(false);
   const [routes, set_routes] = React.useState([[]]);
   const [draw, set_draw] = React.useState(false);
   const [add_project, set_add_project] = React.useState({
@@ -40,7 +44,7 @@ const Layout = () => {
           set_routes((pre) =>
             pre.map((item, i) => {
               if (i === routeCounter) {
-                return [res];
+                return [{ name: item[0].name, color: item[0].color, ...res }];
               } else {
                 return item;
               }
@@ -60,6 +64,7 @@ const Layout = () => {
           set_routes={set_routes}
           set_coordinates={set_coordinates}
           set_add_project={set_add_project}
+          set_edit_open={set_edit_open}
         />
         <Grid
           item
@@ -70,6 +75,7 @@ const Layout = () => {
         >
           <Toolbar />
           <SaveButton
+            editing={editing}
             set_routeCounter={set_routeCounter}
             is_add={add_project}
             coordinates={coordinates}
@@ -80,22 +86,43 @@ const Layout = () => {
             set_add_project={set_add_project}
           />
           <AddProject
+            set_edit_open={set_edit_open}
+            edit_open={edit_open}
+            set_editing={set_editing}
+            set_routeCounter={set_routeCounter}
+            editing={editing}
             set_coordinates={set_coordinates}
             set_routes={set_routes}
             add_project={add_project}
             set_add_project={set_add_project}
           />
-          {/* <CheckRoutes routes={routes} type={add_project.project_type} /> */}
+
           <Drawer set_draw={set_draw} routes={routes} />
-          {/* <ShowPoints routes={routes} type={add_project.project_type} /> */}
+
           <ClearPoints
+            set_edit_open={set_edit_open}
+            set_editing={set_editing}
             set_counter={set_routeCounter}
             set_coordinates={set_coordinates}
             routes={routes}
             set_routes={set_routes}
           />
-
+          <PutProject
+            editing={editing}
+            set_editing={set_editing}
+            add_project={add_project}
+            routes={routes}
+            coordinates={coordinates}
+          />
+          <EditRoute
+            set_edit_open={set_edit_open}
+            edit_open={edit_open}
+            set_editing={set_editing}
+            add_project={set_add_project}
+            counter={set_routeCounter}
+          />
           <Map
+            editing={editing}
             counter={routeCounter}
             set_draw={set_draw}
             draw={draw}

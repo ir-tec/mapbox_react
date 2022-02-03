@@ -6,7 +6,12 @@ import { set_auth } from "../redux/actions";
 import Store from "../redux/Store";
 import ProjectManagement from "./ProjectManagement";
 
-const ProfileDropdown = ({ set_routes, set_coordinates, set_add_project }) => {
+const ProfileDropdown = ({
+  set_routes,
+  set_coordinates,
+  set_add_project,
+  set_edit_open,
+}) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -38,6 +43,7 @@ const ProfileDropdown = ({ set_routes, set_coordinates, set_add_project }) => {
             set_add_project={set_add_project}
             set_routes={set_routes}
             set_coordinates={set_coordinates}
+            set_edit_open={set_edit_open}
           />
         </MenuItem>
         <MenuItem

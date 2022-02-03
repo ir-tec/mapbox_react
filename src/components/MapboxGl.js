@@ -9,8 +9,10 @@ const MapboxGl = ({
   type,
   add_project,
   counter,
+  editing,
 }) => {
   const [popup, set_popup] = React.useState({});
+
   function handleClick(map, event) {
     if (add_project.is_add) {
       return set_coordinates((pre) =>
@@ -41,7 +43,13 @@ const MapboxGl = ({
     >
       {routes.map((route, index) => {
         const linePaint = {
-          "line-color": colors[index],
+          "line-color":
+            route[0] &&
+            Object.keys(route[0]) &&
+            Object.keys(route[0]).length > 2 &&
+            draw
+              ? route[0].color
+              : "#333",
           "line-width": 3,
         };
 
@@ -49,7 +57,10 @@ const MapboxGl = ({
           <Layer type="line" key={index} layout={lineLayout} paint={linePaint}>
             <Feature
               coordinates={
-                route.length !== 0 && draw
+                route[0] &&
+                Object.keys(route[0]) &&
+                Object.keys(route[0]).length > 2 &&
+                draw
                   ? route[0][type === "directions/v5" ? "routes" : "trips"][0]
                       .geometry.coordinates
                   : []
@@ -60,10 +71,12 @@ const MapboxGl = ({
       })}
       {coordinates.map((coordinate, index) => {
         const POSITION_CIRCLE_PAINT = {
-          "circle-stroke-width": 3,
+          "circle-stroke-width": index === counter && editing ? 5 : 3,
           "circle-radius": 7,
-          "circle-color": colors[index],
-          "circle-stroke-color": "white",
+          "circle-color":
+            routes[index].length !== 0 ? routes[index][0]?.color : "blue",
+          "circle-stroke-color":
+            index === counter && editing ? "black" : "white",
         };
         return (
           <Layer
@@ -82,18 +95,28 @@ const MapboxGl = ({
                   onMouseEnter={() => set_popup(item)}
                   onMouseLeave={() => set_popup({})}
                   onDragStart={() => set_popup({})}
-                  // onDragEnd={(e) => {
-                  //   set_popup(e.lngLat);
-                  //   set_coordinates((pre) =>
-                  //     pre.map((p, index) => {
-                  //       if (i === index) {
-                  //         return e.lngLat;
-                  //       } else {
-                  //         return p;
-                  //       }
-                  //     })
-                  //   );
-                  // }}
+                  onDragEnd={(e) => {
+                    set_popup(e.lngLat);
+                    if ((editing || add_project.is_add) && counter === index) {
+                      set_coordinates((pre) =>
+                        pre.map((coor, coor_index) => {
+                          if (coor_index === counter) {
+                            return coor.map((c, ci) => {
+                              if (ci === i) {
+                                return e.lngLat;
+                              } else {
+                                return c;
+                              }
+                            });
+                          } else {
+                            return coor;
+                          }
+                        })
+                      );
+                    } else {
+                      return null;
+                    }
+                  }}
                 />
               );
             })}
@@ -133,25 +156,25 @@ const lineLayout = {
 const Map = ReactMapboxGl({
   accessToken: process.env.REACT_APP_MY_TOKEN,
 });
-const colors = [
-  "#B71C1C",
-  "#263238",
-  "#880E4F",
-  "#BF360C",
-  "#4A148C",
-  "#004D40",
-  "#1DE9B6",
-  "#F57F17",
-  "#F50057",
-  "#FFD600",
-  "#651FFF",
-  "#424242",
-  "#D81B60",
-  "#0091EA",
-  "#EC407A",
-  "#455A64",
-  "#006064",
-  "#F06292",
-  "#3E2723",
-  "#283593",
-];
+// const colors = [
+//   "#B71C1C",
+//   "#263238",
+//   "#880E4F",
+//   "#BF360C",
+//   "#4A148C",
+//   "#004D40",
+//   "#1DE9B6",
+//   "#F57F17",
+//   "#F50057",
+//   "#FFD600",
+//   "#651FFF",
+//   "#424242",
+//   "#D81B60",
+//   "#0091EA",
+//   "#EC407A",
+//   "#455A64",
+//   "#006064",
+//   "#F06292",
+//   "#3E2723",
+//   "#283593",
+// ];

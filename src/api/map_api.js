@@ -41,3 +41,37 @@ export const post_project = async (values) => {
     return data;
   } catch (error) {}
 };
+export const get_current_project = async (id) => {
+  try {
+    const { data } = await auth_apis.get(`/projects/${id}`);
+
+    return data;
+  } catch (error) {}
+};
+
+export const put_current_project = async (id, values) => {
+  try {
+    const { data } = await auth_apis.put(`/projects/${id}`, values);
+    Store.dispatch(
+      set_message({
+        mode: true,
+        message: data.message,
+        color: "success",
+      })
+    );
+    return data;
+  } catch (error) {}
+};
+export const delete_project = async (id) => {
+  try {
+    const { data } = await auth_apis.delete(`/projects/${id}`);
+    Store.dispatch(
+      set_message({
+        mode: true,
+        message: data.message,
+        color: "success",
+      })
+    );
+    return data;
+  } catch (error) {}
+};

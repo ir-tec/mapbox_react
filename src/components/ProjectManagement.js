@@ -14,6 +14,7 @@ const ProjectManagement = ({
   set_coordinates,
   set_routes,
   set_add_project,
+  set_edit_open,
 }) => {
   const [open, setOpen] = React.useState(false);
 
@@ -58,6 +59,7 @@ const ProjectManagement = ({
                 <Typography variant="h4">Projects</Typography>
               </Grid>
               <ProjectTable
+                set_edit_open={set_edit_open}
                 set_add_project={set_add_project}
                 set_open={setOpen}
                 set_coordinates={set_coordinates}

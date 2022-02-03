@@ -9,15 +9,23 @@ import {
   Divider,
   MenuItem,
   Button,
+  Zoom,
 } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import { Formik, Form } from "formik";
+import { GithubPicker } from "react-color";
+import { set_route_to_edit } from "../redux/actions";
+import Store from "../redux/Store";
 
 const AddProject = ({
   set_add_project,
   add_project,
   set_routes,
   set_coordinates,
+  editing,
+  set_editing,
+  set_routeCounter,
+  set_edit_open,
 }) => {
   const [open, setOpen] = React.useState(false);
 
@@ -27,31 +35,43 @@ const AddProject = ({
   const handleClose = () => {
     setOpen(false);
   };
+
   return (
     <>
-      <Fab
-        onClick={handleOpen}
-        disabled={add_project.is_add}
-        color="secondary"
-        style={{ position: "absolute", bottom: 50, right: 12, zIndex: 2 }}
-      >
-        <Add />
-      </Fab>
+      <Zoom in={!add_project.is_add || editing}>
+        <Fab
+          onClick={handleOpen}
+          // disabled={add_project.is_add}
+          color="secondary"
+          style={{ position: "absolute", bottom: 50, right: 12, zIndex: 2 }}
+        >
+          <Add />
+        </Fab>
+      </Zoom>
       <Formik
         initialValues={{
           project_name: "",
           project_mode: add_project.project_mode,
           project_type: add_project.project_type,
+          first_route: "",
+          initial_color: "",
         }}
         onSubmit={(values, props) => {
-          set_routes([[]]);
+          set_edit_open(false);
+
+          set_routeCounter(0);
           set_coordinates([[]]);
+          set_routes([
+            [{ name: values.first_route, color: values.initial_color }],
+          ]);
           set_add_project({
             is_add: true,
             project_type: values.project_type,
             project_mode: values.project_mode,
             project_name: values.project_name,
           });
+          set_editing(false);
+          Store.dispatch(set_route_to_edit(""));
           props.resetForm();
           handleClose();
         }}
@@ -90,6 +110,19 @@ const AddProject = ({
                       fullWidth
                       onChange={(e) =>
                         formik.setFieldValue("project_name", e.target.value)
+                      }
+                    />
+                  </Grid>
+                  <Grid item xs={8} container>
+                    <Typography variant="body2" style={{ marginBottom: 8 }}>
+                      First Route Name
+                    </Typography>
+                    <TextField
+                      size="small"
+                      variant="outlined"
+                      fullWidth
+                      onChange={(e) =>
+                        formik.setFieldValue("first_route", e.target.value)
                       }
                     />
                   </Grid>
@@ -140,6 +173,18 @@ const AddProject = ({
                     </TextField>
                   </Grid>
                   <Grid item xs={12}>
+                    <Typography style={{ marginBottom: 8 }} variant="body2">
+                      Pick The Initial Color
+                    </Typography>
+                    <GithubPicker
+                      width="fit-content"
+                      color="#b80000"
+                      onChangeComplete={(color) => {
+                        formik.setFieldValue("initial_color", color.hex);
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
                     <Divider />
                   </Grid>
                   <Grid item xs={12} container justifyContent="flex-end">
@@ -155,7 +200,11 @@ const AddProject = ({
                       variant="contained"
                       color="primary"
                       type="submit"
-                      disabled={formik.values.project_name === ""}
+                      disabled={
+                        formik.values.project_name === "" ||
+                        formik.values.initial_color === "" ||
+                        formik.values.first_route === ""
+                      }
                       onClick={() => {
                         formik.submitForm();
                       }}
