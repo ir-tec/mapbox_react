@@ -11,6 +11,9 @@ const ProfileDropdown = ({
   set_coordinates,
   set_add_project,
   set_edit_open,
+  set_editing,
+  set_draw,
+  set_routeCounter,
 }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -40,6 +43,9 @@ const ProfileDropdown = ({
           }}
         >
           <ProjectManagement
+            set_routeCounter={set_routeCounter}
+            set_draw={set_draw}
+            set_editing={set_editing}
             set_add_project={set_add_project}
             set_routes={set_routes}
             set_coordinates={set_coordinates}

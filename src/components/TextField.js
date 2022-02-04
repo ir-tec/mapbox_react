@@ -1,4 +1,11 @@
-import { TextField } from "@material-ui/core";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from "@material-ui/core";
 import { useField } from "formik";
 
 export const TextFieldWrapper = ({ name, ...otherProps }) => {
@@ -35,5 +42,42 @@ export const TextFieldWrapper = ({ name, ...otherProps }) => {
       classes={{}}
       inputProps={{ style: { fontSize: 14 } }}
     />
+  );
+};
+export const Selectwrapper = ({ name, label, options, ...otherProps }) => {
+  const [field, mata] = useField(name);
+
+  const config = {
+    ...field,
+    ...otherProps,
+  };
+
+  if (mata && mata.error && mata.touched) {
+    config.error = true;
+    config.helpertext = mata.error;
+  }
+
+  return (
+    <FormControl fullWidth size="small" variant="outlined">
+      <InputLabel>{label}</InputLabel>
+      <Select {...config} label={label} defaultValue="">
+        {options !== undefined ? (
+          options.map((item, index) => {
+            return (
+              <MenuItem key={index} value={item.value}>
+                {item.title}
+              </MenuItem>
+            );
+          })
+        ) : (
+          <MenuItem value={field.value}>{field.value}</MenuItem>
+        )}
+      </Select>
+      {mata && mata.error && mata.touched ? (
+        <Typography variant="button" color="secondary">
+          {mata.error}
+        </Typography>
+      ) : null}
+    </FormControl>
   );
 };

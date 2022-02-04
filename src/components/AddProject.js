@@ -16,6 +16,7 @@ import { Formik, Form } from "formik";
 import { GithubPicker } from "react-color";
 import { set_route_to_edit } from "../redux/actions";
 import Store from "../redux/Store";
+import { Selectwrapper } from "./TextField";
 
 const AddProject = ({
   set_add_project,
@@ -38,7 +39,7 @@ const AddProject = ({
 
   return (
     <>
-      <Zoom in={!add_project.is_add || editing}>
+      <Zoom in={!Boolean(add_project.project_name) || editing}>
         <Fab
           onClick={handleOpen}
           // disabled={add_project.is_add}
@@ -55,6 +56,8 @@ const AddProject = ({
           project_type: add_project.project_type,
           first_route: "",
           initial_color: "",
+          country: "",
+          city: "",
         }}
         onSubmit={(values, props) => {
           set_edit_open(false);
@@ -69,6 +72,8 @@ const AddProject = ({
             project_type: values.project_type,
             project_mode: values.project_mode,
             project_name: values.project_name,
+            country: values.country,
+            city: values.city,
           });
           set_editing(false);
           Store.dispatch(set_route_to_edit(""));
@@ -77,6 +82,10 @@ const AddProject = ({
         }}
       >
         {(formik) => {
+          let cities = city1.filter((item, i) => {
+            return item.country === formik.values.country;
+          });
+
           return (
             <Form>
               <Dialog
@@ -113,6 +122,26 @@ const AddProject = ({
                       }
                     />
                   </Grid>
+                  <Grid item xs={8} justifyContent="space-between" container>
+                    <Grid item xs={5}>
+                      <Selectwrapper
+                        label={"Country"}
+                        name={"country"}
+                        options={countries}
+                        onChange={(e) => {
+                          formik.setFieldValue("country", e.target.value);
+                          formik.setFieldValue("city", "");
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={5}>
+                      <Selectwrapper
+                        label={"City"}
+                        name={"city"}
+                        options={cities}
+                      />
+                    </Grid>
+                  </Grid>
                   <Grid item xs={8} container>
                     <Typography variant="body2" style={{ marginBottom: 8 }}>
                       First Route Name
@@ -126,6 +155,7 @@ const AddProject = ({
                       }
                     />
                   </Grid>
+
                   <Grid item xs={8} container>
                     <Typography variant="body2" style={{ marginBottom: 8 }}>
                       Project Type
@@ -203,6 +233,8 @@ const AddProject = ({
                       disabled={
                         formik.values.project_name === "" ||
                         formik.values.initial_color === "" ||
+                        formik.values.city === "" ||
+                        formik.values.country === "" ||
                         formik.values.first_route === ""
                       }
                       onClick={() => {
@@ -238,4 +270,16 @@ const modes = [
 const types = [
   { title: "Directions", value: "directions/v5" },
   { title: "Optimized", value: "optimized-trips/v1" },
+];
+
+const countries = [
+  { title: "England", value: "en" },
+  { title: "United State", value: "us" },
+];
+
+const city1 = [
+  { title: "California", value: "california", country: "us" },
+  { title: "New York", value: "newyork", country: "us" },
+  { title: "London", value: "london", country: "en" },
+  { title: "Birmingham", value: "birmingham", country: "en" },
 ];

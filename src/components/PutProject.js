@@ -10,6 +10,7 @@ const PutProject = ({
   routes,
   coordinates,
   set_editing,
+  set_edit_open,
 }) => {
   const theme = useTheme();
   return (
@@ -20,6 +21,7 @@ const PutProject = ({
             (res) => {
               if (!res) return;
               //   set_editing(false);
+              set_edit_open(false);
             }
           )
         }

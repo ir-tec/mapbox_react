@@ -61,6 +61,9 @@ const Layout = () => {
       <CssBaseline />
       <div style={{ minHeight: "100vh", width: "100%", display: "flex" }}>
         <NavBar
+          set_draw={set_draw}
+          set_editing={set_editing}
+          set_routeCounter={set_routeCounter}
           set_routes={set_routes}
           set_coordinates={set_coordinates}
           set_add_project={set_add_project}
@@ -103,11 +106,13 @@ const Layout = () => {
             set_edit_open={set_edit_open}
             set_editing={set_editing}
             set_counter={set_routeCounter}
+            set_add_project={set_add_project}
             set_coordinates={set_coordinates}
             routes={routes}
             set_routes={set_routes}
           />
           <PutProject
+            set_edit_open={set_edit_open}
             editing={editing}
             set_editing={set_editing}
             add_project={add_project}

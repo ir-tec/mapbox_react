@@ -52,7 +52,9 @@ const SaveButton = ({
           disabled={!Boolean(routes[routes.length - 1][0]?.code)}
           onClick={() => {
             post_project({
+              country: is_add.country,
               project_name: is_add.project_name,
+              city: is_add.city,
               routes: {
                 coordinates,
                 mode: is_add.project_mode,
@@ -137,14 +139,16 @@ const SaveButton = ({
 
                 <IconButton
                   onClick={(e) => {
-                    set_coordinates((pre) => [...pre, []]);
+                    set_add_project((pre) => {
+                      return { ...pre, is_add: true };
+                    });
                     set_routes((pre) => [...pre, [new_route]]);
+                    set_coordinates((pre) => [...pre, []]);
                     if (!editing) {
                       set_routeCounter((pre) => pre + 1);
                     } else {
                       set_routeCounter(routes.length);
                     }
-
                     set_new_route({ name: "", color: "" });
                     setOpen(false);
                   }}

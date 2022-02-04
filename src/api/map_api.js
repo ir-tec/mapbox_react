@@ -62,6 +62,19 @@ export const put_current_project = async (id, values) => {
     return data;
   } catch (error) {}
 };
+export const put_project_doc = async (id, values) => {
+  try {
+    const { data } = await auth_apis.put(`/projects/doc/${id}`, values);
+    Store.dispatch(
+      set_message({
+        mode: true,
+        message: data.message,
+        color: "success",
+      })
+    );
+    return data;
+  } catch (error) {}
+};
 export const delete_project = async (id) => {
   try {
     const { data } = await auth_apis.delete(`/projects/${id}`);

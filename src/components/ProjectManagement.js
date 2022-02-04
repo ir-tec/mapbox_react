@@ -15,6 +15,9 @@ const ProjectManagement = ({
   set_routes,
   set_add_project,
   set_edit_open,
+  set_editing,
+  set_draw,
+  set_routeCounter,
 }) => {
   const [open, setOpen] = React.useState(false);
 
@@ -59,6 +62,9 @@ const ProjectManagement = ({
                 <Typography variant="h4">Projects</Typography>
               </Grid>
               <ProjectTable
+                set_routeCounter={set_routeCounter}
+                set_draw={set_draw}
+                set_editing={set_editing}
                 set_edit_open={set_edit_open}
                 set_add_project={set_add_project}
                 set_open={setOpen}

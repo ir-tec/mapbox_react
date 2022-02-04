@@ -11,6 +11,7 @@ const ClearPoints = ({
   set_counter,
   set_edit_open,
   set_editing,
+  set_add_project,
 }) => {
   return (
     <Zoom in={routes[0].length !== 0}>
@@ -20,6 +21,7 @@ const ClearPoints = ({
           set_counter(0);
           set_coordinates([[]]);
           set_routes([[]]);
+          set_add_project({ is_add: false });
           set_edit_open(false);
           set_editing(false);
           Store.dispatch(set_route_to_edit(""));

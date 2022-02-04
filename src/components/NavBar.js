@@ -8,6 +8,9 @@ const NavBar = ({
   set_routes,
   set_add_project,
   set_edit_open,
+  set_editing,
+  set_draw,
+  set_routeCounter,
 }) => {
   const theme = useTheme();
   return (
@@ -20,6 +23,9 @@ const NavBar = ({
           </Grid>
           <Grid item>
             <ProfileDropdown
+              set_routeCounter={set_routeCounter}
+              set_draw={set_draw}
+              set_editing={set_editing}
               set_edit_open={set_edit_open}
               set_add_project={set_add_project}
               set_coordinates={set_coordinates}
