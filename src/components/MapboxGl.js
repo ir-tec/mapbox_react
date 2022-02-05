@@ -30,7 +30,7 @@ const MapboxGl = ({
       set_popup({});
     }, 1000);
   }
-
+  console.log(add_project);
   const handleClickRef = useRef(handleClick);
   handleClickRef.current = handleClick;
 
@@ -40,6 +40,21 @@ const MapboxGl = ({
       style={"mapbox://styles/mapbox/streets-v9"}
       onClick={(map, event) => handleClickRef.current(map, event)}
       className="map"
+      center={
+        coordinates[coordinates.length - 1][coordinates.length - 1]
+          ? [
+              coordinates[coordinates.length - 1][coordinates.length - 1][
+                "lng"
+              ],
+              coordinates[coordinates.length - 1][coordinates.length - 1][
+                "lat"
+              ],
+            ]
+          : [
+              process.env.REACT_APP_DEFAULT_MAP_LAT,
+              process.env.REACT_APP_DEFAULT_MAP_LAN,
+            ]
+      }
     >
       {routes.map((route, index) => {
         const linePaint = {

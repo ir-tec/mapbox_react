@@ -46,6 +46,7 @@ const Login = () => {
                 container
                 justifyContent="center"
                 alignItems="center"
+                className="login"
                 style={{
                   height: "100vh",
                   backgroundColor: "#ECF5FF",

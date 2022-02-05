@@ -35,3 +35,8 @@
   font-family: inter;
   src: url("./asset/fonts/Inter-Regular.ttf");
 }
+
+.login {
+  background-image: url("./asset/img/480030_download-ultra-hd-quality-windows10-4k-wallpapers_1920x1080_h.jpg");
+  background-size: 100% 100%;
+}

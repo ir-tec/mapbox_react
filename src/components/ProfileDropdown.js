@@ -2,7 +2,7 @@ import { IconButton, Menu, MenuItem } from "@material-ui/core";
 import { KeyboardArrowDown } from "@material-ui/icons";
 import React from "react";
 
-import { set_auth } from "../redux/actions";
+import { set_auth, set_route_to_edit } from "../redux/actions";
 import Store from "../redux/Store";
 import ProjectManagement from "./ProjectManagement";
 
@@ -56,6 +56,7 @@ const ProfileDropdown = ({
           onClick={() => {
             localStorage.clear();
             Store.dispatch(set_auth(2));
+            Store.dispatch(set_route_to_edit(""));
           }}
         >
           Logout

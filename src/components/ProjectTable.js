@@ -83,6 +83,7 @@ const ProjectTable = ({
                     return {
                       ...pre,
                       project_type: props.row.routes[0].type,
+                      project_mode: props.row.routes[0].mode,
                       is_add: true,
                     };
                   });
