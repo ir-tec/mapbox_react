@@ -30,7 +30,7 @@ const MapboxGl = ({
       set_popup({});
     }, 1000);
   }
-  console.log(add_project);
+
   const handleClickRef = useRef(handleClick);
   handleClickRef.current = handleClick;
 
