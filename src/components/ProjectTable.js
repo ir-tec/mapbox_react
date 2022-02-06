@@ -84,6 +84,8 @@ const ProjectTable = ({
                       ...pre,
                       project_type: props.row.routes[0].type,
                       project_mode: props.row.routes[0].mode,
+                      lat: props.row.lat,
+                      lng: props.row.lng,
                       is_add: true,
                     };
                   });

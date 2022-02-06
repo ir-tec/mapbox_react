@@ -33,7 +33,7 @@ const MapboxGl = ({
 
   const handleClickRef = useRef(handleClick);
   handleClickRef.current = handleClick;
-
+  console.log(add_project);
   return (
     <Map
       // eslint-disable-next-line
@@ -41,15 +41,8 @@ const MapboxGl = ({
       onClick={(map, event) => handleClickRef.current(map, event)}
       className="map"
       center={
-        coordinates[coordinates.length - 1][coordinates.length - 1]
-          ? [
-              coordinates[coordinates.length - 1][coordinates.length - 1][
-                "lng"
-              ],
-              coordinates[coordinates.length - 1][coordinates.length - 1][
-                "lat"
-              ],
-            ]
+        add_project.lat
+          ? [add_project.lat, add_project.lng]
           : [
               process.env.REACT_APP_DEFAULT_MAP_LAT,
               process.env.REACT_APP_DEFAULT_MAP_LAN,

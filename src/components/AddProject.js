@@ -16,7 +16,11 @@ import { Formik, Form } from "formik";
 import { GithubPicker } from "react-color";
 import { set_route_to_edit } from "../redux/actions";
 import Store from "../redux/Store";
-import { Selectwrapper } from "./TextField";
+import { Selectwrapper, TextFieldWrapper } from "./TextField";
+import {
+  initialValues,
+  validationSchema,
+} from "../validation/Add_project_validation";
 
 const AddProject = ({
   set_add_project,
@@ -51,14 +55,12 @@ const AddProject = ({
       </Zoom>
       <Formik
         initialValues={{
-          project_name: "",
+          ...initialValues,
           project_mode: add_project.project_mode,
           project_type: add_project.project_type,
-          first_route: "",
-          initial_color: "",
-          country: "",
-          city: "",
         }}
+        validationSchema={validationSchema}
+        validateOnMount
         onSubmit={(values, props) => {
           set_edit_open(false);
 
@@ -74,6 +76,8 @@ const AddProject = ({
             project_name: values.project_name,
             country: values.country,
             city: values.city,
+            lat: values.lat,
+            lng: values.lng,
           });
           set_editing(false);
           Store.dispatch(set_route_to_edit(""));
@@ -113,19 +117,12 @@ const AddProject = ({
                     <Typography variant="body2" style={{ marginBottom: 8 }}>
                       Project Name
                     </Typography>
-                    <TextField
-                      size="small"
-                      variant="outlined"
-                      fullWidth
-                      onChange={(e) =>
-                        formik.setFieldValue("project_name", e.target.value)
-                      }
-                    />
+                    <TextFieldWrapper name="project_name" />
                   </Grid>
                   <Grid item xs={8} justifyContent="space-between" container>
                     <Grid item xs={5}>
+                      <Typography variant="body2">Country</Typography>
                       <Selectwrapper
-                        label={"Country"}
                         name={"country"}
                         options={countries}
                         onChange={(e) => {
@@ -135,25 +132,26 @@ const AddProject = ({
                       />
                     </Grid>
                     <Grid item xs={5}>
-                      <Selectwrapper
-                        label={"City"}
-                        name={"city"}
-                        options={cities}
-                      />
+                      <Typography variant="body2">City</Typography>
+                      <Selectwrapper name={"city"} options={cities} />
+                    </Grid>
+                  </Grid>
+                  {/* ------------------------------------------------------------------------------lat and lng */}
+                  <Grid item xs={8} justifyContent="space-between" container>
+                    <Grid item xs={5}>
+                      <Typography variant="body2">Latitude</Typography>
+                      <TextFieldWrapper name={"lat"} />
+                    </Grid>
+                    <Grid item xs={5}>
+                      <Typography variant="body2">longitude </Typography>
+                      <TextFieldWrapper name="lng" />
                     </Grid>
                   </Grid>
                   <Grid item xs={8} container>
                     <Typography variant="body2" style={{ marginBottom: 8 }}>
                       First Route Name
                     </Typography>
-                    <TextField
-                      size="small"
-                      variant="outlined"
-                      fullWidth
-                      onChange={(e) =>
-                        formik.setFieldValue("first_route", e.target.value)
-                      }
-                    />
+                    <TextFieldWrapper name={"first_route"} />
                   </Grid>
 
                   <Grid item xs={8} container>
@@ -222,7 +220,10 @@ const AddProject = ({
                       variant="outlined"
                       style={{ marginRight: 24 }}
                       color="secondary"
-                      onClick={handleClose}
+                      onClick={() => {
+                        formik.resetForm();
+                        handleClose();
+                      }}
                     >
                       Cancel
                     </Button>
@@ -230,13 +231,7 @@ const AddProject = ({
                       variant="contained"
                       color="primary"
                       type="submit"
-                      disabled={
-                        formik.values.project_name === "" ||
-                        formik.values.initial_color === "" ||
-                        formik.values.city === "" ||
-                        formik.values.country === "" ||
-                        formik.values.first_route === ""
-                      }
+                      disabled={!formik.isValid}
                       onClick={() => {
                         formik.submitForm();
                       }}

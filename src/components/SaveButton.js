@@ -55,6 +55,8 @@ const SaveButton = ({
               country: is_add.country,
               project_name: is_add.project_name,
               city: is_add.city,
+              lat: is_add.lat,
+              lng: is_add.lng,
               routes: {
                 coordinates,
                 mode: is_add.project_mode,
