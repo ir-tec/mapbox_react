@@ -100,6 +100,18 @@ const Login = () => {
                     </FormGroup>
                   </Grid>
                   <Grid item xs={11} container justifyContent="flex-start">
+                    <Typography
+                      variant="subtitle2"
+                      color="primary"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        history.push("/try_forget");
+                      }}
+                    >
+                      Forget Your Password?
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={11} container justifyContent="flex-start">
                     <Button
                       fullWidth
                       type="submit"

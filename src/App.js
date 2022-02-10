@@ -6,6 +6,7 @@ import Layout from "./components/Layout";
 import MessageHandler from "./components/AlertMessage";
 import Login from "./Pages/Login/Login";
 import Register from "./Pages/register/Register";
+import TryForget from "./Pages/Login/TryForget";
 
 function App({ auth }) {
   return (
@@ -20,6 +21,9 @@ function App({ auth }) {
           </Route>
           <Route exact path={"/register"}>
             <Register />
+          </Route>
+          <Route exact path={"/try_forget"}>
+            <TryForget />
           </Route>
         </Switch>
       )}

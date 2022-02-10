@@ -3,6 +3,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import { delete_project, get_projects } from "../api/map_api";
 import { IconButton } from "@material-ui/core";
 import { Delete, VisibilityRounded } from "@material-ui/icons";
+import exel from "../asset/img/excel-logo-974BFF9CB9-seeklogo.com.png";
+import json from "../asset/img/json.png";
 import moment from "moment";
 import Store from "../redux/Store";
 import { set_route_to_edit } from "../redux/actions";
@@ -68,7 +70,7 @@ const ProjectTable = ({
     {
       field: "_id",
       headerName: "Actions",
-      width: 200,
+      width: 250,
       renderCell: (props) => {
         return (
           <>
@@ -126,6 +128,20 @@ const ProjectTable = ({
               data={props.row}
               id={props.row._id}
             />
+            <IconButton
+              onClick={() => {
+                exportData(props.row, "csv", props.row.project_name);
+              }}
+            >
+              <img src={exel} alt="" width={20} height={20} />
+            </IconButton>
+            <IconButton
+              onClick={() => {
+                exportData(props.row, "json", props.row.project_name);
+              }}
+            >
+              <img src={json} alt="" width={20} height={20} />
+            </IconButton>
           </>
         );
       },
@@ -149,3 +165,13 @@ const mapStateToProps = ({ editRoute }) => {
   return { editRoute };
 };
 export default connect(mapStateToProps)(ProjectTable);
+const exportData = (data, type, name) => {
+  const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
+    JSON.stringify(data)
+  )}`;
+  const link = document.createElement("a");
+  link.href = jsonString;
+  link.download = `${name}.${type}`;
+
+  link.click();
+};

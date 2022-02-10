@@ -28,3 +28,9 @@ export const regsterInitialValues = {
   password: "",
   confirm_password: "",
 };
+export const Try_forget_validation = yup.object({
+  email: yup
+    .string()
+    .required("Field is required")
+    .email("Format is incorrect"),
+});

@@ -1,41 +1,23 @@
-import {
-  Grid,
-  Typography,
-  Checkbox,
-  Button,
-  Fade,
-  FormGroup,
-  FormControlLabel,
-} from "@material-ui/core";
+import { Button, Fade, Grid, Typography } from "@material-ui/core";
+import { Done } from "@material-ui/icons";
 import { Form, Formik } from "formik";
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { register_api } from "../../api/auth_api_call";
+import { try_forget } from "../../api/auth_api_call";
 import { TextFieldWrapper } from "../../components/TextField";
+import { Try_forget_validation } from "../../validation/AuthValidation";
 
-import { styles } from "../../styles/MainStyles";
-import {
-  RegisterValidationSchema,
-  regsterInitialValues,
-} from "../../validation/AuthValidation";
-const Register = () => {
-  const [checked, setChecked] = React.useState(false);
-
-  const classes = styles();
-
-  const handleChange = (event) => {
-    setChecked(event.target.checked);
-  };
+const TryForget = () => {
   const history = useHistory();
   return (
     <Formik
-      initialValues={regsterInitialValues}
-      validationSchema={RegisterValidationSchema}
+      initialValues={{ email: "" }}
+      validationSchema={Try_forget_validation}
       validateOnMount
       onSubmit={(value, props) => {
-        register_api(value).then((res) => {
+        try_forget(value).then((res) => {
           if (!res) return;
-
+          props.resetForm();
           history.push("/");
         });
       }}
@@ -74,43 +56,26 @@ const Register = () => {
                     paddingTop: "1%",
                   }}
                 >
-                  <Grid item xs={11} container justifyContent="center">
-                    <Typography variant="h4">Wellcome Here</Typography>
-                  </Grid>
                   {/* ---------------------------------------------------------user login section */}
+
+                  <Grid item xs={11} container justifyContent="center">
+                    <Typography variant="h4">Wellcome Back</Typography>
+                  </Grid>
+                  <Grid item xs={11} container alignItems="flex-end">
+                    <Done fontSize="medium" />
+                    <Typography variant="subtitle2">
+                      A link will send to your Email For changing your Password
+                    </Typography>
+                  </Grid>
                   <Grid item xs={11} container justifyContent="center">
                     <Grid item xs={12} container justifyContent="flex-start">
                       <Typography variant="subtitle1">Email Address</Typography>
                       <TextFieldWrapper name="email" />
                     </Grid>
-                    <Grid item xs={12} container justifyContent="flex-start">
-                      <Typography variant="subtitle1">Password</Typography>
-                      <TextFieldWrapper name="password" type="password" />
-                    </Grid>
-
-                    <Grid item xs={12} container justifyContent="flex-start">
-                      <Typography variant="subtitle1">
-                        Confirm Password
-                      </Typography>
-
-                      <TextFieldWrapper
-                        name="confirm_password"
-                        type="password"
-                      />
-                    </Grid>
                   </Grid>
 
-                  <Grid item xs={11} container justifyContent="flex-start">
-                    <FormGroup>
-                      <FormControlLabel
-                        control={
-                          <Checkbox checked={checked} onChange={handleChange} />
-                        }
-                        label="Remember me"
-                        classes={{ label: classes.checkLabel }}
-                      />
-                    </FormGroup>
-                  </Grid>
+                  {/* ---------------------------------------------------------user register section */}
+
                   <Grid item xs={11} container justifyContent="flex-start">
                     <Button
                       fullWidth
@@ -119,17 +84,19 @@ const Register = () => {
                       variant="contained"
                       color="secondary"
                     >
-                      Register
+                      Send Link
                     </Button>
                   </Grid>
                   <Grid item xs={11} container justifyContent="flex-start">
                     <Button
-                      onClick={() => history.push("/")}
                       fullWidth
+                      onClick={() => {
+                        history.push("/register");
+                      }}
                       variant="text"
-                      color="secondary"
+                      color="primary"
                     >
-                      Login
+                      Register
                     </Button>
                   </Grid>
                 </Grid>
@@ -142,4 +109,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default TryForget;
