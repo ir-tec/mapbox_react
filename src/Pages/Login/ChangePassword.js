@@ -1,24 +1,60 @@
 import { Button, Fade, Grid, Typography } from "@material-ui/core";
 import { Form, Formik } from "formik";
 import React from "react";
+import Countdown from "react-countdown";
+import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { change_password_api, resend_token } from "../../api/auth_api_call";
 import { TextFieldWrapper } from "../../components/TextField";
 import {
-  RegisterValidationSchema,
-  regsterInitialValues,
+  change_password_values,
+  change_password_verification,
 } from "../../validation/AuthValidation";
 
-const ChangePassword = () => {
+const ChangePassword = ({ verification_id }) => {
+  const history = useHistory();
+  React.useEffect(() => {
+    if (!verification_id) {
+      history.push("/");
+    }
+    // eslint-disable-next-line
+  }, []);
+  let time = Date.now() + 600 * 1000;
+  const [resend, set_resend] = React.useState(false);
+  const Renderer = ({ minutes, seconds, completed }) => {
+    if (completed) {
+      return (
+        <Button
+          onClick={() => {
+            resend_token({ id: verification_id }).then((res) => {
+              if (!res) return;
+              set_resend((pre) => !pre);
+            });
+          }}
+          color="primary"
+        >
+          Resend
+        </Button>
+      );
+    } else {
+      return (
+        <Typography variant="body2" color="secondary">
+          {minutes}:{seconds}
+        </Typography>
+      );
+    }
+  };
   return (
     <Formik
-      initialValues={regsterInitialValues}
-      validationSchema={RegisterValidationSchema}
+      initialValues={change_password_values}
+      validationSchema={change_password_verification}
       validateOnMount
       onSubmit={(value, props) => {
-        // try_forget(value).then((res) => {
-        //   if (!res) return;
-        //   props.resetForm();
-        //   history.push("/");
-        // });
+        change_password_api({ ...value, id: verification_id }).then((res) => {
+          if (!res) return;
+          props.resetForm();
+          history.push("/");
+        });
       }}
     >
       {(formik) => {
@@ -61,16 +97,37 @@ const ChangePassword = () => {
                     <Typography variant="h4">Change Your Password</Typography>
                   </Grid>
 
+                  <Grid
+                    item
+                    xs={11}
+                    container
+                    justifyContent="space-between"
+                    alignItems="center"
+                  >
+                    <Typography variant="body2">
+                      Check your email for sended token
+                    </Typography>
+
+                    <Countdown key={resend} date={time} renderer={Renderer} />
+                  </Grid>
+
                   <Grid item xs={11} container justifyContent="center">
                     <Grid item xs={12} container justifyContent="flex-start">
+                      <Typography variant="subtitle1">Token</Typography>
+                      <TextFieldWrapper name="token" />
+                    </Grid>
+                    <Grid item xs={12} container justifyContent="flex-start">
                       <Typography variant="subtitle1">Password</Typography>
-                      <TextFieldWrapper name="password" />
+                      <TextFieldWrapper name="password" type="password" />
                     </Grid>
                     <Grid item xs={12} container justifyContent="flex-start">
                       <Typography variant="subtitle1">
                         Confirm Password
                       </Typography>
-                      <TextFieldWrapper name="confirm_password" />
+                      <TextFieldWrapper
+                        name="confirm_password"
+                        type="password"
+                      />
                     </Grid>
                   </Grid>
 
@@ -96,5 +153,10 @@ const ChangePassword = () => {
     </Formik>
   );
 };
+const mapSteteToProps = (props) => {
+  const { verification_id } = props;
 
-export default ChangePassword;
+  return { verification_id };
+};
+
+export default connect(mapSteteToProps)(ChangePassword);

@@ -4,6 +4,7 @@ const initial = {
   message: "",
   editRoute: "",
   loading: false,
+  verification_id: null,
 };
 
 export const reducer = (state = initial, action) => {
@@ -17,6 +18,9 @@ export const reducer = (state = initial, action) => {
       break;
     case actionTypes.MESSAGE:
       ret = "message";
+      break;
+    case actionTypes.VERIFICATION_ID:
+      ret = "verification_id";
       break;
     default:
       return state;

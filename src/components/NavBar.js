@@ -1,6 +1,9 @@
 import { AppBar, Grid, Toolbar, Typography, useTheme } from "@material-ui/core";
 import React from "react";
-
+import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { set_auth } from "../redux/actions";
+import Store from "../redux/Store";
 import ProfileDropdown from "./ProfileDropdown";
 
 const NavBar = ({
@@ -11,15 +14,26 @@ const NavBar = ({
   set_editing,
   set_draw,
   set_routeCounter,
+  auth,
 }) => {
   const theme = useTheme();
+  let username;
+  const history = useHistory();
+  try {
+    username = JSON.parse(localStorage.user_info).username;
+  } catch (error) {
+    localStorage.clear();
+    history.push("/");
+    Store.dispatch(set_auth(6));
+  }
+
   return (
     <AppBar style={{ zIndex: theme.zIndex.drawer + 1 }}>
       <Toolbar>
         <Grid container alignItems="center">
           <Grid item></Grid>
           <Grid item>
-            <Typography variant="body1">userName</Typography>
+            <Typography variant="body1">{username}</Typography>
           </Grid>
           <Grid item>
             <ProfileDropdown
@@ -37,5 +51,9 @@ const NavBar = ({
     </AppBar>
   );
 };
+const mapSteteToProps = (props) => {
+  const { auth } = props;
 
-export default NavBar;
+  return { auth };
+};
+export default connect(mapSteteToProps)(NavBar);

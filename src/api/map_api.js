@@ -14,9 +14,7 @@ export const get_direction = async (type, coordinates, mode) => {
       }
     );
     return data;
-  } catch (error) {
-    console.log(`${error}`);
-  }
+  } catch (error) {}
 };
 
 export const get_projects = async () => {

@@ -6,7 +6,7 @@ export const base_url = axios.create({
   baseURL: "https://api.mapbox.com",
 });
 export const auth_apis = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: process.env.REACT_APP_BASE_URL,
 });
 
 auth_apis.interceptors.request.use((config) => {

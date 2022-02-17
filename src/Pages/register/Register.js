@@ -1,31 +1,17 @@
-import {
-  Grid,
-  Typography,
-  Checkbox,
-  Button,
-  Fade,
-  FormGroup,
-  FormControlLabel,
-} from "@material-ui/core";
+import { Grid, Typography, Button, Fade } from "@material-ui/core";
 import { Form, Formik } from "formik";
 import React from "react";
+import Store from "../../redux/Store";
+import { set_verification_id } from "../../redux/actions";
 import { useHistory } from "react-router-dom";
 import { register_api } from "../../api/auth_api_call";
 import { TextFieldWrapper } from "../../components/TextField";
 
-import { styles } from "../../styles/MainStyles";
 import {
   RegisterValidationSchema,
   regsterInitialValues,
 } from "../../validation/AuthValidation";
 const Register = () => {
-  const [checked, setChecked] = React.useState(false);
-
-  const classes = styles();
-
-  const handleChange = (event) => {
-    setChecked(event.target.checked);
-  };
   const history = useHistory();
   return (
     <Formik
@@ -35,8 +21,8 @@ const Register = () => {
       onSubmit={(value, props) => {
         register_api(value).then((res) => {
           if (!res) return;
-
-          history.push("/");
+          Store.dispatch(set_verification_id(res.id));
+          history.push("/verification");
         });
       }}
     >
@@ -79,16 +65,44 @@ const Register = () => {
                   </Grid>
                   {/* ---------------------------------------------------------user login section */}
                   <Grid item xs={11} container justifyContent="center">
-                    <Grid item xs={12} container justifyContent="flex-start">
+                    <Grid
+                      item
+                      xs={12}
+                      container
+                      justifyContent="flex-start"
+                      style={{ marginBottom: 16 }}
+                    >
+                      <Typography variant="subtitle1">Name</Typography>
+                      <TextFieldWrapper name="username" />
+                    </Grid>
+                    <Grid
+                      item
+                      xs={12}
+                      container
+                      style={{ marginBottom: 16 }}
+                      justifyContent="flex-start"
+                    >
                       <Typography variant="subtitle1">Email Address</Typography>
                       <TextFieldWrapper name="email" />
                     </Grid>
-                    <Grid item xs={12} container justifyContent="flex-start">
+                    <Grid
+                      item
+                      xs={12}
+                      container
+                      justifyContent="flex-start"
+                      style={{ marginBottom: 16 }}
+                    >
                       <Typography variant="subtitle1">Password</Typography>
                       <TextFieldWrapper name="password" type="password" />
                     </Grid>
 
-                    <Grid item xs={12} container justifyContent="flex-start">
+                    <Grid
+                      item
+                      xs={12}
+                      container
+                      justifyContent="flex-start"
+                      style={{ marginBottom: 16 }}
+                    >
                       <Typography variant="subtitle1">
                         Confirm Password
                       </Typography>
@@ -98,18 +112,6 @@ const Register = () => {
                         type="password"
                       />
                     </Grid>
-                  </Grid>
-
-                  <Grid item xs={11} container justifyContent="flex-start">
-                    <FormGroup>
-                      <FormControlLabel
-                        control={
-                          <Checkbox checked={checked} onChange={handleChange} />
-                        }
-                        label="Remember me"
-                        classes={{ label: classes.checkLabel }}
-                      />
-                    </FormGroup>
                   </Grid>
                   <Grid item xs={11} container justifyContent="flex-start">
                     <Button

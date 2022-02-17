@@ -33,7 +33,7 @@ const MapboxGl = ({
 
   const handleClickRef = useRef(handleClick);
   handleClickRef.current = handleClick;
-  console.log(add_project);
+
   return (
     <Map
       // eslint-disable-next-line

@@ -7,6 +7,8 @@ import MessageHandler from "./components/AlertMessage";
 import Login from "./Pages/Login/Login";
 import Register from "./Pages/register/Register";
 import TryForget from "./Pages/Login/TryForget";
+import EmailVerification from "./Pages/Login/EmailVerification";
+import ChangePassword from "./Pages/Login/ChangePassword";
 
 function App({ auth }) {
   return (
@@ -24,6 +26,12 @@ function App({ auth }) {
           </Route>
           <Route exact path={"/try_forget"}>
             <TryForget />
+          </Route>
+          <Route exact path={"/verification"}>
+            <EmailVerification />
+          </Route>
+          <Route exact path={"/change_password"}>
+            <ChangePassword />
           </Route>
         </Switch>
       )}

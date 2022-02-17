@@ -1,26 +1,47 @@
 import { Button, Fade, Grid, Typography } from "@material-ui/core";
 import { Form, Formik } from "formik";
 import React from "react";
+import Countdown from "react-countdown";
+import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { try_forget } from "../../api/auth_api_call";
+import { resend_token, verify_email } from "../../api/auth_api_call";
 import { TextFieldWrapper } from "../../components/TextField";
 import { set_verification_id } from "../../redux/actions";
 import Store from "../../redux/Store";
-import { Try_forget_validation } from "../../validation/AuthValidation";
 
-const TryForget = () => {
+const EmailVerification = ({ verification_id }) => {
   const history = useHistory();
+  const [resend, set_resend] = React.useState(false);
+
+  const Renderer = ({ minutes, seconds, completed }) => {
+    if (completed) {
+      return (
+        <Completed handler={set_resend} verification_id={verification_id} />
+      );
+    } else {
+      return (
+        <Typography variant="body2" color="secondary">
+          {minutes}:{seconds}
+        </Typography>
+      );
+    }
+  };
+  let time = Date.now() + 600 * 1000;
+  React.useEffect(() => {
+    if (!verification_id) {
+      history.push("/");
+    }
+    // eslint-disable-next-line
+  }, []);
   return (
     <Formik
-      initialValues={{ email: "" }}
-      validationSchema={Try_forget_validation}
+      initialValues={{ token: "" }}
       validateOnMount
       onSubmit={(value, props) => {
-        try_forget(value).then((res) => {
+        verify_email(verification_id, value.token).then((res) => {
           if (!res) return;
-          Store.dispatch(set_verification_id(res.id));
-          props.resetForm();
-          history.push("/change_password");
+          Store.dispatch(set_verification_id(null));
+          history.push("/");
         });
       }}
     >
@@ -61,18 +82,21 @@ const TryForget = () => {
                   {/* ---------------------------------------------------------user login section */}
 
                   <Grid item xs={11} container justifyContent="center">
-                    <Typography variant="h4">Wellcome Back</Typography>
+                    <Typography variant="h4">Verify Your Email</Typography>
                   </Grid>
-                  <Grid item xs={11} container alignItems="flex-end">
-                    {/* <Done fontSize="medium" /> */}
-                    <Typography variant="subtitle2">
-                      A code will send to your email
+
+                  <Grid item xs={11} container justifyContent="flex-start">
+                    <Typography variant="body2">
+                      Check your email for verified code
                     </Typography>
                   </Grid>
                   <Grid item xs={11} container justifyContent="center">
+                    <Countdown key={resend} date={time} renderer={Renderer} />
+                  </Grid>
+                  <Grid item xs={11} container justifyContent="center">
                     <Grid item xs={12} container justifyContent="flex-start">
-                      <Typography variant="subtitle1">Email Address</Typography>
-                      <TextFieldWrapper name="email" />
+                      <Typography variant="subtitle1">Code</Typography>
+                      <TextFieldWrapper name="token" />
                     </Grid>
                   </Grid>
 
@@ -82,23 +106,11 @@ const TryForget = () => {
                     <Button
                       fullWidth
                       type="submit"
-                      disabled={!formik.isValid}
+                      // disabled={formik.values.token === ""}
                       variant="contained"
                       color="secondary"
                     >
-                      Send Code
-                    </Button>
-                  </Grid>
-                  <Grid item xs={11} container justifyContent="flex-start">
-                    <Button
-                      fullWidth
-                      onClick={() => {
-                        history.push("/register");
-                      }}
-                      variant="text"
-                      color="primary"
-                    >
-                      Register
+                      Save
                     </Button>
                   </Grid>
                 </Grid>
@@ -111,4 +123,25 @@ const TryForget = () => {
   );
 };
 
-export default TryForget;
+const mapSteteToProps = (props) => {
+  const { verification_id } = props;
+
+  return { verification_id };
+};
+
+export default connect(mapSteteToProps)(EmailVerification);
+const Completed = ({ handler, verification_id }) => {
+  return (
+    <Button
+      onClick={() => {
+        resend_token({ id: verification_id }).then((res) => {
+          if (!res) return;
+          handler((pre) => !pre);
+        });
+      }}
+      color="primary"
+    >
+      Resend
+    </Button>
+  );
+};

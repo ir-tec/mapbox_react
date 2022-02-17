@@ -5,6 +5,7 @@ import React from "react";
 import { set_auth, set_route_to_edit } from "../redux/actions";
 import Store from "../redux/Store";
 import ProjectManagement from "./ProjectManagement";
+import Profile from "../Pages/profile/profile";
 
 const ProfileDropdown = ({
   set_routes,
@@ -36,10 +37,17 @@ const ProfileDropdown = ({
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
+        <MenuItem
+          onClick={(e) => {
+            handleClose();
+          }}
+        >
+          <Profile />
+        </MenuItem>
         <MenuItem
           onClick={() => {
             handleClose();
+            return;
           }}
         >
           <ProjectManagement

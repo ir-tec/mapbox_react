@@ -20,3 +20,6 @@ export const set_route_to_edit = (mode) => {
 export const set_loading = (mode) => {
   return template(mode, "LOADING");
 };
+export const set_verification_id = (mode) => {
+  return template(mode, "VERIFICATION_ID");
+};
