@@ -6,6 +6,7 @@ import { set_auth, set_route_to_edit } from "../redux/actions";
 import Store from "../redux/Store";
 import ProjectManagement from "./ProjectManagement";
 import Profile from "../Pages/profile/profile";
+import ManageUSers from "../Pages/Manage_user/ManageUsers";
 
 const ProfileDropdown = ({
   set_routes,
@@ -21,7 +22,8 @@ const ProfileDropdown = ({
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
+  const user = JSON.parse(localStorage.user_info);
+  console.log(user.email);
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -60,6 +62,13 @@ const ProfileDropdown = ({
             set_edit_open={set_edit_open}
           />
         </MenuItem>
+        {user.email &&
+          process.env.REACT_APP_ADMIN_USER &&
+          user.email === process.env.REACT_APP_ADMIN_USER && (
+            <MenuItem>
+              <ManageUSers />
+            </MenuItem>
+          )}
         <MenuItem
           onClick={() => {
             localStorage.clear();
